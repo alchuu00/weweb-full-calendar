@@ -1342,7 +1342,7 @@ export default {
                             eventType: {
                                 label: { en: 'Event Type' },
                                 type: 'Text',
-                                options: { placeholder: 'default, important, etc.' },
+                                options: { placeholder: 'ambulatory_phase, laboratory_phase, etc.' },
                             },
                         },
                     },
