@@ -773,7 +773,7 @@ export default {
     /* === Event-type visuals (work_order / laboratory_phase / ambulatory_phase) === */
     /* parent = solid (uses event.backgroundColor) + subtle left accent */
     :deep(.fc .fc-event.work_order) {
-        border-left: 5px solid rgba(0, 0, 0, .28) !important;
+        /*border-left: 5px solid rgba(0, 0, 0, .28) !important;*/
         box-sizing: border-box;
     }
 
@@ -797,7 +797,7 @@ export default {
     }
 
     :deep(.fc .fc-event.ambulatory_phase) {
-        border: 2px dashed rgba(0, 0, 0, .22) !important;
+        /*border: 2px dashed rgba(0, 0, 0, .22) !important;*/
         box-sizing: border-box;
     }
 
