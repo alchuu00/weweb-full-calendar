@@ -802,10 +802,10 @@ export default {
     }
 
     /* ensure readable text on patterned overlays */
-    :deep(.fc .fc-event.laboratory_phase .fc-event-main),
+    /*:deep(.fc .fc-event.laboratory_phase .fc-event-main),
     :deep(.fc .fc-event.ambulatory_phase .fc-event-main) {
         color: var(--fc-event-text-color) !important;
-    }
+    }*/
 
 }
 </style>
