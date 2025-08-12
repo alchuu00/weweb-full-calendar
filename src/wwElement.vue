@@ -95,9 +95,9 @@ export default {
         // Process events data with property path mapping
         const processedEvents = computed(() => {
             const events = props.content?.events || [];
-            
+
             const { resolveMappingFormula } = wwLib.wwFormula.useFormula();
-    
+
             return events.map(event => {
                 // Get values using formulas
                 const id = resolveMappingFormula(props.content?.eventsIdFormula, event) ?? event.id;
@@ -111,21 +111,28 @@ export default {
                 const content = resolveMappingFormula(props.content?.eventsContentFormula, event) ?? event.content;
                 const data = resolveMappingFormula(props.content?.eventsDataFormula, event) ?? event.data;
                 const groupId = resolveMappingFormula(props.content?.eventsGroupIdFormula, event) ?? event.groupId;
+                // 🔹 New: get event_type from your event data
+                const eventType = resolveMappingFormula(props.content?.eventsEventTypeFormula, event) ?? event.eventType
+                    ?? event.event_type
+                    ?? event.type;
+
                 return {
                     id: id || wwLib.wwUtils.getUid(),
                     title: title || 'Untitled Event',
-                    start: start,
-                    end: end,
-                    allDay: allDay,
+                    start,
+                    end,
+                    allDay,
                     backgroundColor: backgroundColor || props.content?.defaultEventBackgroundColor || '#3788d8',
                     borderColor: borderColor || props.content?.defaultEventBorderColor || '#3788d8',
                     textColor: textColor || props.content?.defaultEventTextColor || '#ffffff',
-                    ...(groupId ? {groupId: groupId || undefined} : {}),
+                    ...(groupId ? { groupId } : {}),
                     extendedProps: {
                         content: content || '',
                         data: data || {},
                         originalEvent: event,
+                        eventType: eventType || 'default',   // <-- keep it here for logic/click handlers
                     },
+                    classNames: [eventType || 'default'], // 👈 Add eventType as CSS class
                 };
             });
         });
@@ -174,7 +181,7 @@ export default {
             }
 
             // Ensure at least one day is visible (prevent hiding all days)
-            if ([0,1,2,3,4,5,6].every(day => hidden.includes(day))) {
+            if ([0, 1, 2, 3, 4, 5, 6].every(day => hidden.includes(day))) {
                 return []
             }
 
@@ -185,18 +192,18 @@ export default {
         const calendarOptions = computed(() => {
             const firstDay = props.content?.startWeekOnSunday ? 0 : 1;
             const locale = props.content?.locale === 'auto' ? wwLib.wwLang.lang : props.content?.locale || 'en';
-            
+
             // Validate default view
             let initialView = currentView;
             const validViews = ['multiMonthYear', 'dayGridMonth', 'timeGridWeek', 'timeGridDay', 'listWeek'];
             if (!validViews.includes(initialView)) {
                 initialView = 'dayGridMonth';
             }
-            
+
             // Validate time start and end
             let slotMinTime = '00:00:00';
             let slotMaxTime = '24:00:00';
-            
+
             if (props.content?.timeStart) {
                 // Simple validation for time format (HH:MM:SS)
                 const timeStartRegex = /^([01]?[0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])$/;
@@ -204,7 +211,7 @@ export default {
                     slotMinTime = props.content.timeStart;
                 }
             }
-            
+
             if (props.content?.timeEnd) {
                 // Simple validation for time format (HH:MM:SS)
                 const timeEndRegex = /^([01]?[0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])$/;
@@ -212,21 +219,21 @@ export default {
                     slotMaxTime = props.content.timeEnd;
                 }
             }
-            
+
             // Handle height and contentHeight settings
             let height = props.content?.height || '600px';
             let contentHeight = props.content?.contentHeight || 'auto';
-            
+
             // If height is 'auto', set it to null to let FullCalendar handle it
             if (height === 'auto') {
                 height = null;
             }
-            
+
             // If contentHeight is 'auto', set it to null to let FullCalendar handle it
             if (contentHeight === 'auto') {
                 contentHeight = null;
             }
-            
+
             // Custom button text
             const buttonText = {};
             if (props.content?.buttonTextToday) buttonText.today = wwLib.wwLang.getText(props.content.buttonTextToday);
@@ -276,6 +283,7 @@ export default {
                         end: info.event.end?.toISOString(),
                         allDay: info.event.allDay,
                         groupId: info.event.groupId,
+                        eventType: info.event.eventType || 'default', // 🔹 New: event type
                     };
 
                     setSelectedEvent(eventData);
@@ -619,7 +627,7 @@ export default {
         .fc-col-header-cell {
             height: var(--fc-day-header-height);
             background-color: var(--fc-day-header-bg-color) !important;
-            
+
             .fc-col-header-cell-cushion {
                 display: flex;
                 align-items: center;
@@ -631,6 +639,7 @@ export default {
                 font-weight: var(--fc-day-header-font-weight);
             }
         }
+
         .fc-timegrid-axis {
             background-color: var(--fc-day-header-bg-color) !important;
         }
@@ -639,7 +648,7 @@ export default {
         .fc-day-today {
             background-color: var(--fc-today-bg-color) !important;
         }
-        
+
         // Fix for cell backgrounds and text colors
         .fc-daygrid-day {
             background-color: var(--fc-cell-bg-color) !important;
@@ -649,7 +658,7 @@ export default {
         // Fix for other month cells
         .fc-day-other {
             background-color: var(--fc-other-month-bg-color) !important;
-            
+
             .fc-daygrid-day-top,
             .fc-daygrid-day-number {
                 color: var(--fc-other-month-text-color) !important;
@@ -657,7 +666,9 @@ export default {
         }
 
         // Weekend text color
-        .fc-day-sat, .fc-day-sun {
+        .fc-day-sat,
+        .fc-day-sun {
+
             .fc-daygrid-day-top,
             .fc-daygrid-day-number,
             .fc-col-header-cell-cushion {
@@ -666,8 +677,8 @@ export default {
         }
 
         // Fix for time grid background
-        .fc-timegrid-cols, 
-        .fc-timegrid-col, 
+        .fc-timegrid-cols,
+        .fc-timegrid-col,
         .fc-timegrid-body {
             background-color: var(--fc-time-grid-bg-color) !important;
         }
@@ -685,7 +696,7 @@ export default {
                 color: var(--fc-today-button-hover-text-color, var(--fc-button-hover-text-color));
             }
         }
-        
+
         // Fix for today highlighting in all views
         .fc-day.fc-day-today,
         .fc-daygrid-day.fc-day-today,
@@ -693,7 +704,7 @@ export default {
         .fc-list-day.fc-day-today {
             background-color: var(--fc-today-bg-color) !important;
         }
-        
+
         // Additional styles for multimonth view (year view)
         .fc-multimonth-daygrid-table {
             .fc-day-today {
@@ -726,6 +737,7 @@ export default {
                     border-radius: var(--fc-button-border-radius);
                     color: var(--fc-button-hover-text-color);
                 }
+
                 &.fc-button-active {
                     background-color: var(--fc-button-active-bg-color);
                     border-radius: var(--fc-button-border-radius);
@@ -757,5 +769,43 @@ export default {
             }
         }
     }
+
+    /* === Event-type visuals (work_order / laboratory_phase / ambulatory_phase) === */
+    /* parent = solid (uses event.backgroundColor) + subtle left accent */
+    :deep(.fc .fc-event.work_order) {
+        border-left: 5px solid rgba(0, 0, 0, .28) !important;
+        box-sizing: border-box;
+    }
+
+    /* lab phase = diagonal white stripes OVER the base color */
+    :deep(.fc .fc-event.laboratory_phase .fc-event-main),
+    :deep(.fc .fc-event.laboratory_phase.fc-daygrid-event) {
+        background-image: repeating-linear-gradient(45deg,
+                rgba(255, 255, 255, .18) 0 8px,
+                rgba(255, 255, 255, .34) 8px 16px) !important;
+        /* overlay pattern, keeps the event's color */
+    }
+
+    /* ambulatory phase = dotted overlay + dashed border */
+    :deep(.fc .fc-event.ambulatory_phase .fc-event-main),
+    :deep(.fc .fc-event.ambulatory_phase.fc-daygrid-event) {
+        background-image:
+            radial-gradient(rgba(255, 255, 255, .35) 1.5px, transparent 1.5px),
+            radial-gradient(rgba(255, 255, 255, .2) 1.5px, transparent 1.5px) !important;
+        background-size: 10px 10px, 10px 10px;
+        background-position: 0 0, 5px 5px;
+    }
+
+    :deep(.fc .fc-event.ambulatory_phase) {
+        border: 2px dashed rgba(0, 0, 0, .22) !important;
+        box-sizing: border-box;
+    }
+
+    /* ensure readable text on patterned overlays */
+    :deep(.fc .fc-event.laboratory_phase .fc-event-main),
+    :deep(.fc .fc-event.ambulatory_phase .fc-event-main) {
+        color: var(--fc-event-text-color, #fff) !important;
+    }
+
 }
 </style>

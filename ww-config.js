@@ -12,20 +12,31 @@ export default {
             ['allDaySlot', 'timeStart', 'timeEnd'],
             ['hideWeekends', 'startWeekOnSunday', 'hideDaysOfWeek'],
             'eventsTitle',
-            ['events',
-            'eventsIdFormula',
-            'eventsTitleFormula',
-            'eventsStartFormula',
-            'eventsEndFormula',
-            'eventsAllDayFormula',
-            'eventsBackgroundColorFormula',
-            'eventsBorderColorFormula',
-            'eventsTextColorFormula',
-            'eventsUrlFormula',
-            'eventsContentFormula',
-            'eventsDataFormula',
-            'eventsGroupIdFormula'],
-            ['buttonTextToday', 'buttonTextYear', 'buttonTextMonth', 'buttonTextWeek', 'buttonTextDay', 'buttonTextList', 'noEventsText']
+            [
+                'events',
+                'eventsIdFormula',
+                'eventsTitleFormula',
+                'eventsStartFormula',
+                'eventsEndFormula',
+                'eventsAllDayFormula',
+                'eventsBackgroundColorFormula',
+                'eventsBorderColorFormula',
+                'eventsTextColorFormula',
+                'eventsUrlFormula',
+                'eventsContentFormula',
+                'eventsDataFormula',
+                'eventsGroupIdFormula',
+                'eventsEventTypeFormula',
+            ],
+            [
+                'buttonTextToday',
+                'buttonTextYear',
+                'buttonTextMonth',
+                'buttonTextWeek',
+                'buttonTextDay',
+                'buttonTextList',
+                'noEventsText',
+            ],
         ],
         customStylePropertiesOrder: [
             'generalStyleTitle',
@@ -175,7 +186,7 @@ export default {
                 unitChoices: [
                     { value: 'px', label: 'px', min: 10, max: 50 },
                     { value: 'em', label: 'em', min: 1, max: 50 },
-                    { value: 'rem', label: 'rem', min: 1, max: 50 }
+                    { value: 'rem', label: 'rem', min: 1, max: 50 },
                 ],
                 noRange: true,
             },
@@ -279,7 +290,7 @@ export default {
                 unitChoices: [
                     { value: 'px', label: 'px', min: 10, max: 50 },
                     { value: 'em', label: 'em', min: 1, max: 50 },
-                    { value: 'rem', label: 'rem', min: 1, max: 50 }
+                    { value: 'rem', label: 'rem', min: 1, max: 50 },
                 ],
                 noRange: true,
             },
@@ -766,7 +777,8 @@ export default {
             /* wwEditor:start */
             bindingValidation: {
                 type: 'string',
-                tooltip: 'Bind to a string value for the default view: multiMonthYear | dayGridMonth | timeGridWeek | timeGridDay | listWeek',
+                tooltip:
+                    'Bind to a string value for the default view: multiMonthYear | dayGridMonth | timeGridWeek | timeGridDay | listWeek',
             },
             /* wwEditor:end */
         },
@@ -897,7 +909,7 @@ export default {
                             { value: 4, label: 'Thursday' },
                             { value: 5, label: 'Friday' },
                             { value: 6, label: 'Saturday' },
-                        ]
+                        ],
                     },
                 },
             },
@@ -917,16 +929,340 @@ export default {
             bindable: true,
             defaultValue: [
                 {
-                    id: 'event1',
-                    title: 'Sample Event',
-                    start: new Date().toISOString(),
-                    end: new Date(new Date().getTime() + 3600000).toISOString(),
+                    id: 'wo-101',
+                    title: 'Work Order — Implant Setup (Client #12)',
+                    start: '2025-08-07T08:00:00',
+                    end: '2025-08-07T08:45:00',
                     allDay: false,
-                    backgroundColor: '#3788d8',
-                    borderColor: '#3788d8',
+                    backgroundColor: '#1565C0',
+                    borderColor: '#1565C0',
                     textColor: '#ffffff',
-                    content: 'This is a sample event',
-                    groupId: '',
+                    eventType: 'work_order',
+                    groupId: '101',
+                },
+                {
+                    id: 'wo-102',
+                    title: 'Work Order — Crown Prep (Client #14)',
+                    start: '2025-08-07T09:00:00',
+                    end: '2025-08-07T09:50:00',
+                    allDay: false,
+                    backgroundColor: '#AD1457',
+                    borderColor: '#AD1457',
+                    textColor: '#ffffff',
+                    eventType: 'work_order',
+                    groupId: '102',
+                },
+                {
+                    id: 'wo-103',
+                    title: 'Work Order — Denture Adjustment (Client #18)',
+                    start: '2025-08-07T11:00:00',
+                    end: '2025-08-07T11:45:00',
+                    allDay: false,
+                    backgroundColor: '#6A1B9A',
+                    borderColor: '#6A1B9A',
+                    textColor: '#ffffff',
+                    eventType: 'work_order',
+                    groupId: '103',
+                },
+
+                // Ambulatory Phases — WO 101
+                {
+                    id: 'amb-101a',
+                    title: 'Amb Phase — Consultation (WO #101)',
+                    start: '2025-08-07T08:50:00',
+                    end: '2025-08-07T09:05:00',
+                    allDay: false,
+                    backgroundColor: '#1E88E5',
+                    borderColor: '#1E88E5',
+                    textColor: '#ffffff',
+                    eventType: 'ambulatory_phase',
+                    groupId: '101',
+                },
+                {
+                    id: 'amb-101b',
+                    title: 'Amb Phase — Imaging (WO #101)',
+                    start: '2025-08-07T09:10:00',
+                    end: '2025-08-07T09:25:00',
+                    allDay: false,
+                    backgroundColor: '#42A5F5',
+                    borderColor: '#42A5F5',
+                    textColor: '#ffffff',
+                    eventType: 'ambulatory_phase',
+                    groupId: '101',
+                },
+                {
+                    id: 'amb-101c',
+                    title: 'Amb Phase — Mock-up (WO #101)',
+                    start: '2025-08-07T09:30:00',
+                    end: '2025-08-07T09:45:00',
+                    allDay: false,
+                    backgroundColor: '#64B5F6',
+                    borderColor: '#64B5F6',
+                    textColor: '#ffffff',
+                    eventType: 'ambulatory_phase',
+                    groupId: '101',
+                },
+                {
+                    id: 'amb-101d',
+                    title: 'Amb Phase — Delivery (WO #101)',
+                    start: '2025-08-07T09:50:00',
+                    end: '2025-08-07T10:05:00',
+                    allDay: false,
+                    backgroundColor: '#90CAF9',
+                    borderColor: '#90CAF9',
+                    textColor: '#000000',
+                    eventType: 'ambulatory_phase',
+                    groupId: '101',
+                },
+
+                // Lab Phases — WO 101
+                {
+                    id: 'lab-101a',
+                    title: 'Lab Phase — Model Prep (WO #101)',
+                    start: '2025-08-07T10:10:00',
+                    end: '2025-08-07T10:30:00',
+                    allDay: false,
+                    backgroundColor: '#BBDEFB',
+                    borderColor: '#90CAF9',
+                    textColor: '#000000',
+                    eventType: 'laboratory_phase',
+                    groupId: '101',
+                },
+                {
+                    id: 'lab-101b',
+                    title: 'Lab Phase — Milling (WO #101)',
+                    start: '2025-08-07T10:35:00',
+                    end: '2025-08-07T10:55:00',
+                    allDay: false,
+                    backgroundColor: '#E3F2FD',
+                    borderColor: '#BBDEFB',
+                    textColor: '#000000',
+                    eventType: 'laboratory_phase',
+                    groupId: '101',
+                },
+                {
+                    id: 'lab-101c',
+                    title: 'Lab Phase — Sintering (WO #101)',
+                    start: '2025-08-07T11:00:00',
+                    end: '2025-08-07T11:20:00',
+                    allDay: false,
+                    backgroundColor: '#E1F5FE',
+                    borderColor: '#E3F2FD',
+                    textColor: '#000000',
+                    eventType: 'laboratory_phase',
+                    groupId: '101',
+                },
+                {
+                    id: 'lab-101d',
+                    title: 'Lab Phase — Final Polish (WO #101)',
+                    start: '2025-08-07T11:25:00',
+                    end: '2025-08-07T11:45:00',
+                    allDay: false,
+                    backgroundColor: '#E0F7FA',
+                    borderColor: '#E1F5FE',
+                    textColor: '#000000',
+                    eventType: 'laboratory_phase',
+                    groupId: '101',
+                },
+
+                // Ambulatory Phases — WO 102
+                {
+                    id: 'amb-102a',
+                    title: 'Amb Phase — Prep (WO #102)',
+                    start: '2025-08-07T09:55:00',
+                    end: '2025-08-07T10:10:00',
+                    allDay: false,
+                    backgroundColor: '#C2185B',
+                    borderColor: '#C2185B',
+                    textColor: '#ffffff',
+                    eventType: 'ambulatory_phase',
+                    groupId: '102',
+                },
+                {
+                    id: 'amb-102b',
+                    title: 'Amb Phase — Impression (WO #102)',
+                    start: '2025-08-07T10:15:00',
+                    end: '2025-08-07T10:30:00',
+                    allDay: false,
+                    backgroundColor: '#D81B60',
+                    borderColor: '#D81B60',
+                    textColor: '#ffffff',
+                    eventType: 'ambulatory_phase',
+                    groupId: '102',
+                },
+                {
+                    id: 'amb-102c',
+                    title: 'Amb Phase — Shade Match (WO #102)',
+                    start: '2025-08-07T10:35:00',
+                    end: '2025-08-07T10:50:00',
+                    allDay: false,
+                    backgroundColor: '#EC407A',
+                    borderColor: '#EC407A',
+                    textColor: '#ffffff',
+                    eventType: 'ambulatory_phase',
+                    groupId: '102',
+                },
+                {
+                    id: 'amb-102d',
+                    title: 'Amb Phase — Final Seating (WO #102)',
+                    start: '2025-08-07T10:55:00',
+                    end: '2025-08-07T11:10:00',
+                    allDay: false,
+                    backgroundColor: '#F8BBD0',
+                    borderColor: '#F8BBD0',
+                    textColor: '#000000',
+                    eventType: 'ambulatory_phase',
+                    groupId: '102',
+                },
+
+                // Lab Phases — WO 102
+                {
+                    id: 'lab-102a',
+                    title: 'Lab Phase — Casting (WO #102)',
+                    start: '2025-08-07T11:15:00',
+                    end: '2025-08-07T11:35:00',
+                    allDay: false,
+                    backgroundColor: '#F48FB1',
+                    borderColor: '#F06292',
+                    textColor: '#000000',
+                    eventType: 'laboratory_phase',
+                    groupId: '102',
+                },
+                {
+                    id: 'lab-102b',
+                    title: 'Lab Phase — Staining (WO #102)',
+                    start: '2025-08-07T11:40:00',
+                    end: '2025-08-07T12:00:00',
+                    allDay: false,
+                    backgroundColor: '#F8BBD0',
+                    borderColor: '#F48FB1',
+                    textColor: '#000000',
+                    eventType: 'laboratory_phase',
+                    groupId: '102',
+                },
+                {
+                    id: 'lab-102c',
+                    title: 'Lab Phase — Assembly (WO #102)',
+                    start: '2025-08-07T12:05:00',
+                    end: '2025-08-07T12:25:00',
+                    allDay: false,
+                    backgroundColor: '#FCE4EC',
+                    borderColor: '#F8BBD0',
+                    textColor: '#000000',
+                    eventType: 'laboratory_phase',
+                    groupId: '102',
+                },
+                {
+                    id: 'lab-102d',
+                    title: 'Lab Phase — Packaging (WO #102)',
+                    start: '2025-08-07T12:30:00',
+                    end: '2025-08-07T12:50:00',
+                    allDay: false,
+                    backgroundColor: '#FFF0F5',
+                    borderColor: '#FCE4EC',
+                    textColor: '#000000',
+                    eventType: 'laboratory_phase',
+                    groupId: '102',
+                },
+
+                // Ambulatory Phases — WO 103
+                {
+                    id: 'amb-103a',
+                    title: 'Amb Phase — Checkup (WO #103)',
+                    start: '2025-08-07T12:55:00',
+                    end: '2025-08-07T13:10:00',
+                    allDay: false,
+                    backgroundColor: '#8E24AA',
+                    borderColor: '#8E24AA',
+                    textColor: '#ffffff',
+                    eventType: 'ambulatory_phase',
+                    groupId: '103',
+                },
+                {
+                    id: 'amb-103b',
+                    title: 'Amb Phase — Imprint (WO #103)',
+                    start: '2025-08-07T13:15:00',
+                    end: '2025-08-07T13:30:00',
+                    allDay: false,
+                    backgroundColor: '#AB47BC',
+                    borderColor: '#AB47BC',
+                    textColor: '#ffffff',
+                    eventType: 'ambulatory_phase',
+                    groupId: '103',
+                },
+                {
+                    id: 'amb-103c',
+                    title: 'Amb Phase — Testing (WO #103)',
+                    start: '2025-08-07T13:35:00',
+                    end: '2025-08-07T13:50:00',
+                    allDay: false,
+                    backgroundColor: '#BA68C8',
+                    borderColor: '#BA68C8',
+                    textColor: '#ffffff',
+                    eventType: 'ambulatory_phase',
+                    groupId: '103',
+                },
+                {
+                    id: 'amb-103d',
+                    title: 'Amb Phase — Delivery (WO #103)',
+                    start: '2025-08-07T13:55:00',
+                    end: '2025-08-07T14:10:00',
+                    allDay: false,
+                    backgroundColor: '#CE93D8',
+                    borderColor: '#CE93D8',
+                    textColor: '#000000',
+                    eventType: 'ambulatory_phase',
+                    groupId: '103',
+                },
+
+                // Lab Phases — WO 103
+                {
+                    id: 'lab-103a',
+                    title: 'Lab Phase — Denture Mold (WO #103)',
+                    start: '2025-08-07T14:15:00',
+                    end: '2025-08-07T14:30:00',
+                    allDay: false,
+                    backgroundColor: '#E1BEE7',
+                    borderColor: '#CE93D8',
+                    textColor: '#000000',
+                    eventType: 'laboratory_phase',
+                    groupId: '103',
+                },
+                {
+                    id: 'lab-103b',
+                    title: 'Lab Phase — Coloring (WO #103)',
+                    start: '2025-08-07T14:35:00',
+                    end: '2025-08-07T14:50:00',
+                    allDay: false,
+                    backgroundColor: '#F3E5F5',
+                    borderColor: '#E1BEE7',
+                    textColor: '#000000',
+                    eventType: 'laboratory_phase',
+                    groupId: '103',
+                },
+                {
+                    id: 'lab-103c',
+                    title: 'Lab Phase — Finishing (WO #103)',
+                    start: '2025-08-07T14:55:00',
+                    end: '2025-08-07T15:10:00',
+                    allDay: false,
+                    backgroundColor: '#F8EAF6',
+                    borderColor: '#F3E5F5',
+                    textColor: '#000000',
+                    eventType: 'laboratory_phase',
+                    groupId: '103',
+                },
+                {
+                    id: 'lab-103d',
+                    title: 'Lab Phase — Case Closed (WO #103)',
+                    start: '2025-08-07T15:15:00',
+                    end: '2025-08-07T15:30:00',
+                    allDay: false,
+                    backgroundColor: '#FAF2FB',
+                    borderColor: '#F8EAF6',
+                    textColor: '#000000',
+                    eventType: 'laboratory_phase',
+                    groupId: '103',
                 },
             ],
             options: {
@@ -937,17 +1273,18 @@ export default {
                 item: {
                     type: 'Object',
                     defaultValue: {
-                        id: '123', 
-                        title: 'Sample Event', 
+                        id: '123',
+                        title: 'Sample Event',
                         content: 'This is a sample event',
-                        start: '', 
-                        end: '', 
-                        allDay: false, 
+                        start: '',
+                        end: '',
+                        allDay: false,
                         backgroundColor: '#3788d8',
                         borderColor: '#3788d8',
                         textColor: '#ffffff',
-                        data: null, 
-                        groupId: null
+                        data: null,
+                        groupId: null,
+                        eventType: 'default', // 🔹 New: event type
                     },
                     options: {
                         item: {
@@ -1001,6 +1338,11 @@ export default {
                                 label: { en: 'Group ID' },
                                 type: 'Text',
                                 options: { placeholder: 'Group ID' },
+                            },
+                            eventType: {
+                                label: { en: 'Event Type' },
+                                type: 'Text',
+                                options: { placeholder: 'default, important, etc.' },
                             },
                         },
                     },
@@ -1168,6 +1510,24 @@ export default {
             hidden: (content, sidepanelContent, boundProps) =>
                 !Array.isArray(content.events) || !content.events?.length || !boundProps.events,
         },
+        eventsEventTypeFormula: {
+            label: { en: 'Event Type Field' },
+            type: 'Formula',
+            section: 'settings',
+            options: content => ({
+                template: Array.isArray(content.events) && content.events.length ? content.events[0] : null,
+            }),
+            defaultValue: {
+                type: 'f',
+                code: "context.mapping?.['event_type'] ?? context.mapping?.['eventType']",
+            },
+            hidden: (content, sidepanelContent, boundProps) =>
+                !Array.isArray(content.events) || !content.events?.length || !boundProps.events,
+            propertyHelp: {
+                tooltip:
+                    'Bind to your API field for the event type (e.g., work_order, laboratory_phase, ambulatory_phase).',
+            },
+        },
 
         buttonTextToday: {
             label: { en: '"Today" button text' },
@@ -1322,7 +1682,7 @@ export default {
         {
             name: 'eventClick',
             label: { en: 'On event click' },
-            event: { 
+            event: {
                 value: {
                     id: 'event1',
                     title: 'Sample Event',
@@ -1332,37 +1692,38 @@ export default {
                     backgroundColor: '#3788d8',
                     borderColor: '#3788d8',
                     textColor: '#ffffff',
-                    content: 'This is a sample event'
-                }
+                    content: 'This is a sample event',
+                    eventType: 'default', // 🔹 New: event type
+                },
             },
         },
         {
             name: 'viewChange',
             label: { en: 'On view change' },
-            event: { 
+            event: {
                 value: {
                     view: 'dayGridMonth',
                     start: new Date().toISOString(),
                     end: new Date(new Date().setMonth(new Date().getMonth() + 1)).toISOString(),
-                    title: 'Month View'
-                }
+                    title: 'Month View',
+                },
             },
         },
         {
             name: 'eventCreated',
             label: { en: 'On event created' },
-            event: { 
+            event: {
                 value: {
                     start: new Date().toISOString(),
                     end: new Date(new Date().getTime() + 3600000).toISOString(),
-                    allDay: false
-                }
+                    allDay: false,
+                },
             },
         },
         {
             name: 'eventUpdated',
             label: { en: 'On event updated' },
-            event: { 
+            event: {
                 value: {
                     id: 'event1',
                     title: 'Updated Event',
@@ -1372,61 +1733,61 @@ export default {
                     backgroundColor: '#3788d8',
                     borderColor: '#3788d8',
                     textColor: '#ffffff',
-                    content: 'This event was updated'
-                }
+                    content: 'This event was updated',
+                },
             },
         },
         {
             name: 'eventDragStart',
             label: { en: 'On event drag start' },
-            event: { 
+            event: {
                 value: {
                     id: 'event1',
                     title: 'Dragging Event',
                     start: new Date().toISOString(),
                     end: new Date(new Date().getTime() + 3600000).toISOString(),
-                    allDay: false
-                }
+                    allDay: false,
+                },
             },
         },
         {
             name: 'eventDragEnd',
             label: { en: 'On event drag end' },
-            event: { 
+            event: {
                 value: {
                     id: 'event1',
                     title: 'Dragged Event',
                     start: new Date().toISOString(),
                     end: new Date(new Date().getTime() + 3600000).toISOString(),
-                    allDay: false
-                }
+                    allDay: false,
+                },
             },
         },
         {
             name: 'eventDrop',
             label: { en: 'On event drop' },
-            event: { 
+            event: {
                 value: {
                     id: 'event1',
                     title: 'Dropped Event',
                     start: new Date().toISOString(),
                     end: new Date(new Date().getTime() + 3600000).toISOString(),
                     allDay: false,
-                    delta: { days: 1, milliseconds: 0 }
-                }
+                    delta: { days: 1, milliseconds: 0 },
+                },
             },
         },
         {
             name: 'eventResizeStart',
             label: { en: 'On event resize start' },
-            event: { 
+            event: {
                 value: {
                     id: 'event1',
                     title: 'Resizing Event',
                     start: new Date().toISOString(),
                     end: new Date(new Date().getTime() + 3600000).toISOString(),
-                    allDay: false
-                }
+                    allDay: false,
+                },
             },
         },
         {
@@ -1440,8 +1801,8 @@ export default {
                     end: new Date(new Date().getTime() + 7200000).toISOString(),
                     allDay: false,
                     startDelta: { days: 0, milliseconds: 0 },
-                    endDelta: { days: 0, milliseconds: 3600000 }
-                }
+                    endDelta: { days: 0, milliseconds: 3600000 },
+                },
             },
         },
     ],
