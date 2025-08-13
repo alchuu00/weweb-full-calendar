@@ -538,7 +538,7 @@ export default {
     --fc-button-active-border-color: #151e27;
     --fc-event-bg-color: #3788d8;
     --fc-event-border-color: #3788d8;
-    --fc-event-text-color: #fff;
+    /*--fc-event-text-color: #fff;*/
     --fc-event-selected-overlay-color: rgba(0, 0, 0, 0.25);
     --fc-more-link-bg-color: #d0d0d0;
     --fc-more-link-text-color: inherit;
