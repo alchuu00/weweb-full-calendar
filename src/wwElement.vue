@@ -197,7 +197,7 @@ export default {
             let initialView = currentView;
             const validViews = ['multiMonthYear', 'dayGridMonth', 'timeGridWeek', 'timeGridDay', 'listWeek'];
             if (!validViews.includes(initialView)) {
-                initialView = 'dayGridMonth';
+                initialView = 'timeGridWeek';
             }
 
             // Validate time start and end
@@ -439,7 +439,7 @@ export default {
                 let viewMode = newVal
                 const validViews = ['multiMonthYear', 'dayGridMonth', 'timeGridWeek', 'timeGridDay', 'listWeek'];
                 if (!validViews.includes(newVal)) {
-                    viewMode = 'dayGridMonth';
+                    viewMode = 'timeGridWeek';
                 }
                 if (viewMode && fullCalendarRef.value) {
                     const calendarApi = fullCalendarRef.value.getApi();
