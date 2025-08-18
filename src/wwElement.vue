@@ -43,7 +43,7 @@ export default {
             uid: props.uid,
             name: 'currentView',
             type: 'string',
-            defaultValue: computed(() => props.content.defaultView || 'dayGridMonth'),
+            defaultValue: computed(() => props.content.defaultView || 'timeGridWeek'),
         });
 
         const { value: selectedEvent, setValue: setSelectedEvent } = wwLib.wwVariable.useComponentVariable({
