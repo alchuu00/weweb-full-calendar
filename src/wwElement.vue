@@ -46,6 +46,21 @@ export default {
             defaultValue: computed(() => props.content.defaultView || 'timeGridWeek'),
         });
 
+        const { value: currentViewStartTimestamp, setValue: setCurrentViewStartTimestamp } = wwLib.wwVariable.useComponentVariable({
+            uid: props.uid,
+            name: 'currentViewStartTimestamp',
+            type: 'string',
+            defaultValue: null,
+        });
+
+        const { value: currentViewEndTimestamp, setValue: setCurrentViewEndTimestamp } = wwLib.wwVariable.useComponentVariable({
+            uid: props.uid,
+            name: 'currentViewEndTimestamp',
+            type: 'string',
+            defaultValue: null,
+        });
+
+
         const { value: selectedEvent, setValue: setSelectedEvent } = wwLib.wwVariable.useComponentVariable({
             uid: props.uid,
             name: 'selectedEvent',
@@ -304,6 +319,8 @@ export default {
                     };
 
                     setCurrentView(info.view.type);
+                    setCurrentViewStartTimestamp(info.view.activeStart?.toISOString() || null);
+                    setCurrentViewEndTimestamp(info.view.activeEnd?.toISOString() || null);
 
                     emit('trigger-event', {
                         name: 'viewChange',
