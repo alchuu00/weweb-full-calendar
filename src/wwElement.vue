@@ -50,14 +50,14 @@ export default {
             uid: props.uid,
             name: 'currentViewStartTimestamp',
             type: 'string',
-            defaultValue: null,
+            defaultValue: computed(() => props.content.currentViewStartTimestamp || null),
         });
 
         const { value: currentViewEndTimestamp, setValue: setCurrentViewEndTimestamp } = wwLib.wwVariable.useComponentVariable({
             uid: props.uid,
             name: 'currentViewEndTimestamp',
             type: 'string',
-            defaultValue: null,
+            defaultValue: computed(() => props.content.currentViewEndTimestamp || null),
         });
 
 
@@ -319,8 +319,8 @@ export default {
                     };
 
                     setCurrentView(info.view.type);
-                    setCurrentViewStartTimestamp(info.view.activeStart?.toISOString() || null);
-                    setCurrentViewEndTimestamp(info.view.activeEnd?.toISOString() || null);
+                    setCurrentViewStartTimestamp(info.view.activeStart?.toISOString());
+                    setCurrentViewEndTimestamp(info.view.activeEnd?.toISOString());
 
                     emit('trigger-event', {
                         name: 'viewChange',
