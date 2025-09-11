@@ -856,12 +856,11 @@ export default {
     }
 
     /* === Event-status border colors === */
-    :deep(.fc .fc-event.work_order),
-    :deep(.fc .fc-event.laboratory_phase),
-    :deep(.fc .fc-event.ambulatory_phase) {
-    border-left: 6px solid var(--laboss-left-border, rgba(0,0,0,.28)) !important;
+    :deep(.fc .fc-timegrid-event.work_order),
+    :deep(.fc .fc-timegrid-event.laboratory_phase),
+    :deep(.fc .fc-timegrid-event.ambulatory_phase) {
+        border-left: 6px solid var(--laboss-left-border, rgba(0, 0, 0, .28)) !important;
     }
-
     /* Work orders */
     :deep(.fc .fc-event.status-nov)         { --laboss-left-border: #D4D4D8; } /* gray */
     :deep(.fc .fc-event.status-v-izdelavi)  { --laboss-left-border: #F1D8B7; } /* orange */
