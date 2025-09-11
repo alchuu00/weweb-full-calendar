@@ -92,10 +92,12 @@ export default {
         function slugStatus(status) {
             return (status || '')
                 .toString()
-                .trim()
+                .normalize('NFD')                 // split letters + accents
+                .replace(/[\u0300-\u036f]/g, '')  // strip accents (č→c, ž→z, š→s)
                 .toLowerCase()
-                .replace(/\s+/g, '-')
-                .replace(/[^\w-]/g, '');
+                .trim()
+                .replace(/\s+/g, '-')             // spaces → dashes
+                .replace(/[^a-z0-9_-]/g, '');     // keep ascii only
         }
 
         // Computed properties for styling
@@ -864,12 +866,12 @@ export default {
     :deep(.fc .fc-event.status-nov)         { --laboss-left-border: #D4D4D8; } /* gray */
     :deep(.fc .fc-event.status-v-izdelavi)  { --laboss-left-border: #F1D8B7; } /* orange */
     :deep(.fc .fc-event.status-v-ambulanti) { --laboss-left-border: #C7CDF0; } /* blue */
-    :deep(.fc .fc-event.status-dokončan)    { --laboss-left-border: #D4EBCB; } /* green */
+    :deep(.fc .fc-event.status-dokoncan)    { --laboss-left-border: #D4EBCB; } /* green */
 
     /* Laboratory phases */
     :deep(.fc .fc-event.status-odprto)      { --laboss-left-border: #D4D4D8; } /* gray */
     :deep(.fc .fc-event.status-motnja)      { --laboss-left-border: #EAAEAE; } /* red */
-    :deep(.fc .fc-event.status-zaključeno)  { --laboss-left-border: #D4EBCB; } /* green */
+    :deep(.fc .fc-event.status-zakljuceno)  { --laboss-left-border: #D4EBCB; } /* green */
 
     /* Ambulatory phases */
     :deep(.fc .fc-event.status-rezerviran)  { --laboss-left-border: #C7CDF0; } /* blue */
