@@ -89,6 +89,15 @@ export default {
             return colors[status] || colors.privzeto;
         }
 
+        function slugStatus(status) {
+            return (status || '')
+                .toString()
+                .trim()
+                .toLowerCase()
+                .replace(/\s+/g, '-')
+                .replace(/[^\w-]/g, '');
+        }
+
         // Computed properties for styling
         const calendarStyles = computed(() => ({
             '--fc-font-family': props.content?.fontFamily || 'inherit',
@@ -126,10 +135,6 @@ export default {
             '--fc-other-month-bg-color': props.content?.otherMonthBackgroundColor || null,
             '--fc-other-month-text-color': props.content?.otherMonthTextColor || null,
             '--fc-weekend-text-color': props.content?.weekendTextColor || null,
-            // Event-type specific colors
-            '--work-order-status-color': getBorderColor(props.content?.workOrderStatus) || 'rgba(255, 255, 255, .28)',
-            '--laboratory-phase-status-color': getBorderColor(props.content?.laboratoryPhaseStatus) || 'rgba(255, 255, 255, .28)',
-            '--ambulatory-phase-status-color': getBorderColor(props.content?.ambulatoryPhaseStatus) || 'rgba(255, 255, 255, .28)',
         }));
 
         // Process events data with property path mapping
@@ -156,8 +161,10 @@ export default {
                     ?? event.event_type
                     ?? event.type;
                 // New: get event status (for custom event border styling)
-                const eventStstus = resolveMappingFormula(props.content?.eventsEventStatusFormula, event) ?? event.eventStatus
+                const eventStatus = resolveMappingFormula(props.content?.eventsEventStatusFormula, event) ?? event.eventStatus
                     ?? event.status;
+
+                const statusClass = `status-${slugStatus(eventStatus)}`;
 
                 return {
                     id: id || wwLib.wwUtils.getUid(),
@@ -174,9 +181,9 @@ export default {
                         data: data || {},
                         originalEvent: event,
                         eventType: eventType || 'default',   // <-- keep it here for logic/click handlers
-                        eventStatus: eventStstus || 'default', 
+                        eventStatus: eventStatus || 'default', 
                     },
-                    classNames: [eventType || 'default'], // 👈 Add eventType as CSS class
+                    classNames: [eventType || 'default', statusClass], // 👈 Add eventType and statusClass as CSS class
                 };
             });
         });
@@ -820,9 +827,7 @@ export default {
     /* === Event-type visuals (work_order / laboratory_phase / ambulatory_phase) === */
     /* parent = solid (uses event.backgroundColor) + subtle left accent */
     :deep(.fc .fc-event.work_order) {
-        /*border-left: 5px solid rgba(0, 0, 0, .28) !important;*/
         box-sizing: border-box;
-        border-left: 6px solid var(--work-order-status-color) !important;
     }
 
     /* lab phase = diagonal white stripes OVER the base color */
@@ -832,7 +837,6 @@ export default {
                 rgba(255, 255, 255, .18) 0 8px,
                 rgba(255, 255, 255, .34) 8px 16px) !important;
         /* overlay pattern, keeps the event's color */
-        border-left: 6px solid var(--laboratory-phase-status-color) !important;
     }
 
     /* ambulatory phase = dotted overlay + dashed border */
@@ -843,19 +847,33 @@ export default {
             radial-gradient(rgba(255, 255, 255, .2) 1.5px, transparent 1.5px) !important;
         background-size: 10px 10px, 10px 10px;
         background-position: 0 0, 5px 5px;
-        border-left: 6px solid var(--ambulatory-phase-status-color) !important;
     }
 
     :deep(.fc .fc-event.ambulatory_phase) {
-        /*border: 2px dashed rgba(0, 0, 0, .22) !important;*/
         box-sizing: border-box;
     }
 
-    /* ensure readable text on patterned overlays */
-    /*:deep(.fc .fc-event.laboratory_phase .fc-event-main),
-    :deep(.fc .fc-event.ambulatory_phase .fc-event-main) {
-        color: var(--fc-event-text-color) !important;
-    }*/
+    /* === Event-status border colors === */
+    :deep(.fc .fc-event.work_order),
+    :deep(.fc .fc-event.laboratory_phase),
+    :deep(.fc .fc-event.ambulatory_phase) {
+    border-left: 6px solid var(--laboss-left-border, rgba(0,0,0,.28)) !important;
+    }
+
+    /* Work orders */
+    :deep(.fc .fc-event.status-nov)         { --laboss-left-border: #D4D4D8; } /* gray */
+    :deep(.fc .fc-event.status-v-izdelavi)  { --laboss-left-border: #F1D8B7; } /* orange */
+    :deep(.fc .fc-event.status-v-ambulanti) { --laboss-left-border: #C7CDF0; } /* blue */
+    :deep(.fc .fc-event.status-dokončan)    { --laboss-left-border: #D4EBCB; } /* green */
+
+    /* Laboratory phases */
+    :deep(.fc .fc-event.status-odprto)      { --laboss-left-border: #D4D4D8; } /* gray */
+    :deep(.fc .fc-event.status-motnja)      { --laboss-left-border: #EAAEAE; } /* red */
+    :deep(.fc .fc-event.status-zaključeno)  { --laboss-left-border: #D4EBCB; } /* green */
+
+    /* Ambulatory phases */
+    :deep(.fc .fc-event.status-rezerviran)  { --laboss-left-border: #C7CDF0; } /* blue */
+    :deep(.fc .fc-event.status-potrjen)     { --laboss-left-border: #D4EBCB; } /* green */
 
 }
 </style>
