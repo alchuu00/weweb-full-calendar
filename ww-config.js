@@ -72,7 +72,7 @@ export default {
                 'todayButtonHoverTextColor',
             ],
             'borderStyleTitle',
-            ['borderColor'],
+            ['borderColor', 'workOrderStatusColor', 'laboratoryPhaseStatusColor', 'ambulatoryPhaseStatusColor'],
             'eventStyleTitle',
             ['defaultEventBackgroundColor', 'defaultEventBorderColor', 'defaultEventTextColor'],
         ],
@@ -566,6 +566,46 @@ export default {
             bindingValidation: {
                 type: 'string',
                 tooltip: 'Bind to a color value for the calendar borders',
+            },
+            /* wwEditor:end */
+        },
+        // Event-type specific border colors
+        workOrderStatusColor: {
+            label: { en: 'Work Order Status Color' },
+            type: 'Color',
+            section: 'style',
+            bindable: true,
+            defaultValue: 'rgba(0, 0, 0, .28)',
+            /* wwEditor:start */
+            bindingValidation: {
+                type: 'string',
+                tooltip: 'Bind to a color value for the Work Order Event Status border',
+            },
+            /* wwEditor:end */
+        },
+        laboratoryPhaseStatusColor: {
+            label: { en: 'Laboratory Phase Status Color' },
+            type: 'Color',
+            section: 'style',
+            bindable: true,
+            defaultValue: 'rgba(255, 255, 255, .28)',
+            /* wwEditor:start */
+            bindingValidation: {
+                type: 'string',
+                tooltip: 'Bind to a color value for the Laboratory Phase Event Status border',
+            },
+            /* wwEditor:end */
+        },
+        ambulatoryPhaseStatusColor: {
+            label: { en: 'Ambulatory Phase Status Color' },
+            type: 'Color',
+            section: 'style',
+            bindable: true,
+            defaultValue: 'rgba(255, 255, 255, .28)',
+            /* wwEditor:start */
+            bindingValidation: {
+                type: 'string',
+                tooltip: 'Bind to a color value for the Ambulatory Phase Event Status border',
             },
             /* wwEditor:end */
         },

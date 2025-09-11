@@ -105,6 +105,10 @@ export default {
             '--fc-other-month-bg-color': props.content?.otherMonthBackgroundColor || null,
             '--fc-other-month-text-color': props.content?.otherMonthTextColor || null,
             '--fc-weekend-text-color': props.content?.weekendTextColor || null,
+            // Event-type specific colors
+            '--work-order-status-color': props.content?.workOrderStatusColor || 'rgba(0, 0, 0, .28)',
+            '--laboratory-phase-status-color': props.content?.laboratoryPhaseStatusColor || 'rgba(255, 255, 255, .28)',
+            '--ambulatory-phase-status-color': props.content?.ambulatoryPhaseStatusColor || 'rgba(255, 255, 255, .28)',
         }));
 
         // Process events data with property path mapping
@@ -792,7 +796,7 @@ export default {
     :deep(.fc .fc-event.work_order) {
         /*border-left: 5px solid rgba(0, 0, 0, .28) !important;*/
         box-sizing: border-box;
-        border-left: 6px solid black !important;
+        border-left: 6px solid var(--work-order-status-color) !important;
     }
 
     /* lab phase = diagonal white stripes OVER the base color */
@@ -802,7 +806,7 @@ export default {
                 rgba(255, 255, 255, .18) 0 8px,
                 rgba(255, 255, 255, .34) 8px 16px) !important;
         /* overlay pattern, keeps the event's color */
-        border-left: 6px solid greenyellow !important;
+        border-left: 6px solid var(--laboratory-phase-status-color) !important;
     }
 
     /* ambulatory phase = dotted overlay + dashed border */
@@ -813,7 +817,7 @@ export default {
             radial-gradient(rgba(255, 255, 255, .2) 1.5px, transparent 1.5px) !important;
         background-size: 10px 10px, 10px 10px;
         background-position: 0 0, 5px 5px;
-        border-left: 6px solid red !important;
+        border-left: 6px solid var(--ambulatory-phase-status-color) !important;
     }
 
     :deep(.fc .fc-event.ambulatory_phase) {
