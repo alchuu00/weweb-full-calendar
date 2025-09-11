@@ -27,6 +27,7 @@ export default {
                 'eventsDataFormula',
                 'eventsGroupIdFormula',
                 'eventsEventTypeFormula',
+                'eventsEventStatusFormula',
             ],
             [
                 'buttonTextToday',
@@ -72,7 +73,7 @@ export default {
                 'todayButtonHoverTextColor',
             ],
             'borderStyleTitle',
-            ['borderColor', 'workOrderStatusColor', 'laboratoryPhaseStatusColor', 'ambulatoryPhaseStatusColor'],
+            ['borderColor'],
             'eventStyleTitle',
             ['defaultEventBackgroundColor', 'defaultEventBorderColor', 'defaultEventTextColor'],
         ],
@@ -566,46 +567,6 @@ export default {
             bindingValidation: {
                 type: 'string',
                 tooltip: 'Bind to a color value for the calendar borders',
-            },
-            /* wwEditor:end */
-        },
-        // Event-type specific border colors
-        workOrderStatusColor: {
-            label: { en: 'Work Order Status Color' },
-            type: 'Color',
-            section: 'style',
-            bindable: true,
-            defaultValue: 'rgba(0, 0, 0, .28)',
-            /* wwEditor:start */
-            bindingValidation: {
-                type: 'string',
-                tooltip: 'Bind to a color value for the Work Order Event Status border',
-            },
-            /* wwEditor:end */
-        },
-        laboratoryPhaseStatusColor: {
-            label: { en: 'Laboratory Phase Status Color' },
-            type: 'Color',
-            section: 'style',
-            bindable: true,
-            defaultValue: 'rgba(255, 255, 255, .28)',
-            /* wwEditor:start */
-            bindingValidation: {
-                type: 'string',
-                tooltip: 'Bind to a color value for the Laboratory Phase Event Status border',
-            },
-            /* wwEditor:end */
-        },
-        ambulatoryPhaseStatusColor: {
-            label: { en: 'Ambulatory Phase Status Color' },
-            type: 'Color',
-            section: 'style',
-            bindable: true,
-            defaultValue: 'rgba(255, 255, 255, .28)',
-            /* wwEditor:start */
-            bindingValidation: {
-                type: 'string',
-                tooltip: 'Bind to a color value for the Ambulatory Phase Event Status border',
             },
             /* wwEditor:end */
         },
@@ -1566,6 +1527,24 @@ export default {
             propertyHelp: {
                 tooltip:
                     'Bind to your API field for the event type (e.g., work_order, laboratory_phase, ambulatory_phase).',
+            },
+        },
+        // status of the event
+        eventsEventStatusFormula: {
+            label: { en: 'Status Field' },
+            type: 'Formula',
+            section: 'settings',
+            options: content => ({
+                template: Array.isArray(content.events) && content.events.length ? content.events[0] : null,
+            }),
+            defaultValue: {
+                type: 'f',
+                code: "context.mapping?.['status']",
+            },
+            hidden: (content, sidepanelContent, boundProps) =>
+                !Array.isArray(content.events) || !content.events?.length || !boundProps.events,
+            propertyHelp: {
+                tooltip: 'Bind to your API field for the event status (e.g., nov, v izdelavi, dokončan).',
             },
         },
 

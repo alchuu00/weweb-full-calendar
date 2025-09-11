@@ -68,6 +68,27 @@ export default {
             defaultValue: null,
         });
 
+        // Helper to get border color based on status
+        function getBorderColor(status) {
+            const colors = {
+                privzeto: "#ffffff00", // transparent
+                // work order statuses
+                'nov': "D4D4D8", // gray
+                'v izdelavi': "#F1D8B7", // light orange
+                'v ambulanti': "#C7CDF0", // light blue
+                'dokončan': "#D4EBCB", // light green
+                // laboratory phase statuses
+                'odprto': "#D4D4D8", // gray
+                'motnja': "#EAAEAE", // light red
+                'zaključeno': "#D4EBCB", // light green
+                // ambulatory phase statuses
+                'Rezerviran': "#C7CDF0", // light blue
+                'Potrjen': "#D4EBCB", // light green
+
+            };
+            return colors[status] || colors.privzeto;
+        }
+
         // Computed properties for styling
         const calendarStyles = computed(() => ({
             '--fc-font-family': props.content?.fontFamily || 'inherit',
@@ -106,9 +127,9 @@ export default {
             '--fc-other-month-text-color': props.content?.otherMonthTextColor || null,
             '--fc-weekend-text-color': props.content?.weekendTextColor || null,
             // Event-type specific colors
-            '--work-order-status-color': props.content?.workOrderStatusColor || 'rgba(0, 0, 0, .28)',
-            '--laboratory-phase-status-color': props.content?.laboratoryPhaseStatusColor || 'rgba(255, 255, 255, .28)',
-            '--ambulatory-phase-status-color': props.content?.ambulatoryPhaseStatusColor || 'rgba(255, 255, 255, .28)',
+            '--work-order-status-color': getBorderColor(props.content?.workOrderStatus) || 'rgba(255, 255, 255, .28)',
+            '--laboratory-phase-status-color': getBorderColor(props.content?.laboratoryPhaseStatus) || 'rgba(255, 255, 255, .28)',
+            '--ambulatory-phase-status-color': getBorderColor(props.content?.ambulatoryPhaseStatus) || 'rgba(255, 255, 255, .28)',
         }));
 
         // Process events data with property path mapping
@@ -134,6 +155,9 @@ export default {
                 const eventType = resolveMappingFormula(props.content?.eventsEventTypeFormula, event) ?? event.eventType
                     ?? event.event_type
                     ?? event.type;
+                // New: get event status (for custom event border styling)
+                const eventStstus = resolveMappingFormula(props.content?.eventsEventStatusFormula, event) ?? event.eventStatus
+                    ?? event.status;
 
                 return {
                     id: id || wwLib.wwUtils.getUid(),
@@ -150,6 +174,7 @@ export default {
                         data: data || {},
                         originalEvent: event,
                         eventType: eventType || 'default',   // <-- keep it here for logic/click handlers
+                        eventStatus: eventStstus || 'default', 
                     },
                     classNames: [eventType || 'default'], // 👈 Add eventType as CSS class
                 };
@@ -303,6 +328,7 @@ export default {
                         allDay: info.event.allDay,
                         groupId: info.event.groupId,
                         eventType: info.event.eventType || 'default', // 🔹 New: event type
+                        eventStatus: info.event.eventStatus || 'default', // New: event status
                     };
 
                     setSelectedEvent(eventData);
