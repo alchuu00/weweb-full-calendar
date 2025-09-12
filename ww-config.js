@@ -28,6 +28,7 @@ export default {
                 'eventsGroupIdFormula',
                 'eventsEventTypeFormula',
                 'eventsEventStatusFormula',
+                'eventsEventUserFormula',
             ],
             [
                 'buttonTextToday',
@@ -1545,6 +1546,24 @@ export default {
                 !Array.isArray(content.events) || !content.events?.length || !boundProps.events,
             propertyHelp: {
                 tooltip: 'Bind to your API field for the event status (e.g., nov, v izdelavi, dokončan).',
+            },
+        },
+        // user info associated with the event
+        eventsEventUserFormula: {
+            label: { en: 'User Field' },
+            type: 'Formula',
+            section: 'settings',
+            options: content => ({
+                template: Array.isArray(content.events) && content.events.length ? content.events[0] : null,
+            }),
+            defaultValue: {
+                type: 'f',
+                code: "context.mapping?.['user']",
+            },
+            hidden: (content, sidepanelContent, boundProps) =>
+                !Array.isArray(content.events) || !content.events?.length || !boundProps.events,
+            propertyHelp: {
+                tooltip: 'Bind to your API field for the user associated with the event (e.g., assigned to).',
             },
         },
 

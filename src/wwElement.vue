@@ -73,7 +73,7 @@ export default {
             const colors = {
                 privzeto: "#ffffff00", // transparent
                 // work order statuses
-                'nov': "D4D4D8", // gray
+                'nov': "#D4D4D8", // gray
                 'v izdelavi': "#F1D8B7", // light orange
                 'v ambulanti': "#C7CDF0", // light blue
                 'dokončan': "#D4EBCB", // light green
@@ -162,11 +162,13 @@ export default {
                 const eventType = resolveMappingFormula(props.content?.eventsEventTypeFormula, event) ?? event.eventType
                     ?? event.event_type
                     ?? event.type;
-                // New: get event status (for custom event border styling)
+                // 🔹 New: get event status (for custom event border styling)
                 const eventStatus = resolveMappingFormula(props.content?.eventsEventStatusFormula, event) ?? event.eventStatus
                     ?? event.status;
-
                 const statusClass = `status-${slugStatus(eventStatus)}`;
+                // 🔹 New: get event user (for avatar initials or image)
+                const eventUser = resolveMappingFormula(props.content?.eventsEventUserFormula, event) ?? event.eventUser
+                    ?? event.user;
 
                 return {
                     id: id || wwLib.wwUtils.getUid(),
@@ -180,10 +182,10 @@ export default {
                     ...(groupId ? { groupId } : {}),
                     extendedProps: {
                         content: content || '',
-                        data: data || {},
+                        data: { ...data, user: eventUser || (data?.user || {}) },
                         originalEvent: event,
                         eventType: eventType || 'default',   // <-- keep it here for logic/click handlers
-                        eventStatus: eventStatus || 'default', 
+                        eventStatus: eventStatus || 'default',
                     },
                     classNames: [eventType || 'default', statusClass], // 👈 Add eventType and statusClass as CSS class
                 };
@@ -485,6 +487,33 @@ export default {
                         event: { value: eventData },
                     });
                 },
+                eventContent: function (arg) {
+                    const isTimegrid = arg.view.type === 'timeGridDay' || arg.view.type === 'timeGridWeek' || arg.view.type === 'listWeek'
+                    const user = arg.event.extendedProps?.data?.user;
+
+                    if (!isTimegrid) {
+                        // FullCalendar falls back to default rendering
+                        return true;
+                    }
+
+                    let avatarHTML = '';
+                    if (user && (user.avatar || user.name)) {
+                        const initials = user.name
+                            ? user.name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase()
+                            : '';
+                        const bgColor = user.avatar || '#3B82F6';
+
+                        avatarHTML = `<div class="ww-avatar" style="background:${bgColor}">${initials}</div>`;
+                    }
+
+                    const titleHTML = `
+    <div class="ww-event-title">
+      <div class="ww-event-time">${arg.timeText} ${arg.event.title}</div>
+    </div>
+  `;
+
+                    return { html: `<div class="ww-event-box">${titleHTML}${avatarHTML}</div>` };
+                },
             };
         });
 
@@ -767,6 +796,66 @@ export default {
                 background-color: var(--fc-today-bg-color) !important;
             }
         }
+
+        /* Wrap avatar + text neatly inside the event box */
+        .ww-event-box {
+            display: flex;
+            align-items: flex-start;
+            gap: 6px;
+            width: 100%;
+            height: 100%;
+            padding: 2px 4px;
+            /* spacing inside event */
+            box-sizing: border-box;
+            /* ensures padding doesn't overflow */
+            overflow: hidden;
+        }
+
+        /* Avatar circle */
+        .ww-avatar {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            color: #fff;
+            font-size: 8px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            /* don't let it shrink */
+            line-height: 1;
+            }
+            
+            .fc-event-title-container {
+                flex-grow: 1;
+                flex-shrink: 1;
+                min-height: 0px;
+            }
+            
+            /* Title block (time + name stacked vertically) */
+            .ww-event-title {
+                display: flex;
+                flex-direction: column;
+            line-height: 1.2;
+            overflow: hidden;
+            min-width: 0;
+            /* enables text-overflow */
+            flex-grow: 1;
+            flex-shrink: 1;
+        }
+
+        /* Time row */
+        .ww-event-time {
+            font-size: .86em;
+            flex-grow: 0;
+            flex-shrink: 0;
+        }
+
+        /* Event name row */
+        .ww-event-name {
+            font-size: .86em;
+        }
     }
 }
 
@@ -855,28 +944,62 @@ export default {
         box-sizing: border-box;
     }
 
-/* === Event-status border colors === */
-:deep(.fc .fc-timegrid-event.work_order),
-:deep(.fc .fc-timegrid-event.laboratory_phase),
-:deep(.fc .fc-timegrid-event.ambulatory_phase) {
-    border-left: 8px solid var(--laboss-left-border, rgba(0, 0, 0, .28)) !important;
-}
+    /* === Event-status border colors === */
+    :deep(.fc .fc-timegrid-event.work_order),
+    :deep(.fc .fc-timegrid-event.laboratory_phase),
+    :deep(.fc .fc-timegrid-event.ambulatory_phase) {
+        border-left: 8px solid var(--laboss-left-border, rgba(0, 0, 0, .28)) !important;
+    }
 
-/* Work orders */
-:deep(.fc .fc-event.status-nov)         { --laboss-left-border: #737373; } /* dark gray */
-:deep(.fc .fc-event.status-v-izdelavi)  { --laboss-left-border: #D97706; } /* strong orange */
-:deep(.fc .fc-event.status-v-ambulanti) { --laboss-left-border: #3B82F6; } /* strong blue */
-:deep(.fc .fc-event.status-dokoncan)    { --laboss-left-border: #22C55E; } /* strong green */
+    /* Work orders */
+    :deep(.fc .fc-event.status-nov) {
+        --laboss-left-border: #737373;
+    }
 
-/* Laboratory phases */
-:deep(.fc .fc-event.status-odprto)      { --laboss-left-border: #737373; } /* dark gray */
-:deep(.fc .fc-event.status-motnja)      { --laboss-left-border: #DC2626; } /* strong red */
-:deep(.fc .fc-event.status-zakljuceno)  { --laboss-left-border: #22C55E; } /* strong green */
+    /* dark gray */
+    :deep(.fc .fc-event.status-v-izdelavi) {
+        --laboss-left-border: #D97706;
+    }
 
-/* Ambulatory phases */
-:deep(.fc .fc-event.status-rezerviran)  { --laboss-left-border: #3B82F6; } /* strong blue */
-:deep(.fc .fc-event.status-potrjen)     { --laboss-left-border: #22C55E; } /* strong green */
+    /* strong orange */
+    :deep(.fc .fc-event.status-v-ambulanti) {
+        --laboss-left-border: #3B82F6;
+    }
 
+    /* strong blue */
+    :deep(.fc .fc-event.status-dokoncan) {
+        --laboss-left-border: #22C55E;
+    }
 
+    /* strong green */
+
+    /* Laboratory phases */
+    :deep(.fc .fc-event.status-odprto) {
+        --laboss-left-border: #737373;
+    }
+
+    /* dark gray */
+    :deep(.fc .fc-event.status-motnja) {
+        --laboss-left-border: #DC2626;
+    }
+
+    /* strong red */
+    :deep(.fc .fc-event.status-zakljuceno) {
+        --laboss-left-border: #22C55E;
+    }
+
+    /* strong green */
+
+    /* Ambulatory phases */
+    :deep(.fc .fc-event.status-rezerviran) {
+        --laboss-left-border: #3B82F6;
+    }
+
+    /* strong blue */
+    :deep(.fc .fc-event.status-potrjen) {
+        --laboss-left-border: #22C55E;
+    }
+
+    /* strong green */
 }
 </style>
