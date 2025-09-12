@@ -804,7 +804,7 @@ export default {
             gap: 6px;
             width: 100%;
             height: 100%;
-            padding: 2px 4px;
+            padding: 0px 4px;
             /* spacing inside event */
             box-sizing: border-box;
             /* ensures padding doesn't overflow */
@@ -948,7 +948,7 @@ export default {
     :deep(.fc .fc-timegrid-event.work_order),
     :deep(.fc .fc-timegrid-event.laboratory_phase),
     :deep(.fc .fc-timegrid-event.ambulatory_phase) {
-        border-left: 8px solid var(--laboss-left-border, rgba(0, 0, 0, .28)) !important;
+        border-left: 10px solid var(--laboss-left-border, rgba(0, 0, 0, .28)) !important;
     }
 
     /* Work orders */
