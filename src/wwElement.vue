@@ -855,26 +855,28 @@ export default {
         box-sizing: border-box;
     }
 
-    /* === Event-status border colors === */
-    :deep(.fc .fc-timegrid-event.work_order),
-    :deep(.fc .fc-timegrid-event.laboratory_phase),
-    :deep(.fc .fc-timegrid-event.ambulatory_phase) {
-        border-left: 8px solid var(--laboss-left-border, rgba(0, 0, 0, .28)) !important;
-    }
-    /* Work orders */
-    :deep(.fc .fc-event.status-nov)         { --laboss-left-border: #D4D4D8; } /* gray */
-    :deep(.fc .fc-event.status-v-izdelavi)  { --laboss-left-border: #F1D8B7; } /* orange */
-    :deep(.fc .fc-event.status-v-ambulanti) { --laboss-left-border: #C7CDF0; } /* blue */
-    :deep(.fc .fc-event.status-dokoncan)    { --laboss-left-border: #D4EBCB; } /* green */
+/* === Event-status border colors === */
+:deep(.fc .fc-timegrid-event.work_order),
+:deep(.fc .fc-timegrid-event.laboratory_phase),
+:deep(.fc .fc-timegrid-event.ambulatory_phase) {
+    border-left: 8px solid var(--laboss-left-border, rgba(0, 0, 0, .28)) !important;
+}
 
-    /* Laboratory phases */
-    :deep(.fc .fc-event.status-odprto)      { --laboss-left-border: #D4D4D8; } /* gray */
-    :deep(.fc .fc-event.status-motnja)      { --laboss-left-border: #EAAEAE; } /* red */
-    :deep(.fc .fc-event.status-zakljuceno)  { --laboss-left-border: #D4EBCB; } /* green */
+/* Work orders */
+:deep(.fc .fc-event.status-nov)         { --laboss-left-border: #737373; } /* dark gray */
+:deep(.fc .fc-event.status-v-izdelavi)  { --laboss-left-border: #D97706; } /* strong orange */
+:deep(.fc .fc-event.status-v-ambulanti) { --laboss-left-border: #3B82F6; } /* strong blue */
+:deep(.fc .fc-event.status-dokoncan)    { --laboss-left-border: #22C55E; } /* strong green */
 
-    /* Ambulatory phases */
-    :deep(.fc .fc-event.status-rezerviran)  { --laboss-left-border: #C7CDF0; } /* blue */
-    :deep(.fc .fc-event.status-potrjen)     { --laboss-left-border: #D4EBCB; } /* green */
+/* Laboratory phases */
+:deep(.fc .fc-event.status-odprto)      { --laboss-left-border: #737373; } /* dark gray */
+:deep(.fc .fc-event.status-motnja)      { --laboss-left-border: #DC2626; } /* strong red */
+:deep(.fc .fc-event.status-zakljuceno)  { --laboss-left-border: #22C55E; } /* strong green */
+
+/* Ambulatory phases */
+:deep(.fc .fc-event.status-rezerviran)  { --laboss-left-border: #3B82F6; } /* strong blue */
+:deep(.fc .fc-event.status-potrjen)     { --laboss-left-border: #22C55E; } /* strong green */
+
 
 }
 </style>
